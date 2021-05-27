@@ -17,18 +17,20 @@ class Start(commands.Cog, name = 'start'):
         
         payload = {'_id'    :       int(ctx.message.author.id),
                    'level'      :       1,
-                   'world'      :       'Earth',
-                   'zone'       :       'Solaris',
+                   'rank'       :       "E",
                    'atk'        :       10,
                    'def'        :       10,
                    'life'       :       100,
                    'money'      :       10000,
                    'bank'       :       1000,
                    'weapon'     :       0,
-                   'Armor'      :       0,
+                   'armor'      :       0,
                    'inv'        :       {'fish' :   1,
                                          'wood' :   1},
-                   'guild'      :       None}
+                   'hab'        :       ['Double hit',
+                                         'Whip'],
+                   'guild'      :       None,
+                   'class'      :       None}
         
         users_list = []
         for user in db.Users.find():

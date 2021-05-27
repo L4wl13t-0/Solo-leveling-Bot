@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 import os, sys, yaml
+from database.mongo import db
 
 if not os.path.isfile("config.yaml"):
     sys.exit("'config.yaml' not found! Please add it and try again.")
@@ -44,6 +45,45 @@ class Moderation(commands.Cog, name = 'moderation'):
                 await ctx.send("**" + module + "**" + " has been unloaded successfully.")
             except:
                 await ctx.send("**" + module + "**" + " could not be found or could not load.")
+        else:
+            await ctx.send("You do not have sufficient permissions to perform this action.")
+            
+    @commands.command(name = 'deletealldbyes')
+    async def deletealldbyes(self, ctx):
+        if ctx.message.author.id in config["moderators"]:
+            try:
+                db.Users.drop()
+                await ctx.send("Database drop (Successful).")
+            except:
+                await ctx.send("Database drop (Fail).")
+        else:
+            await ctx.send("You do not have sufficient permissions to perform this action.")
+            
+    @commands.command(name = 'addfirstuser')
+    async def addfirstuser(self, ctx):
+        if ctx.message.author.id in config["moderators"]:
+            try:
+                payload = {'_id'    :       34534634634634,
+                        'level'      :       1,
+                        'rank'       :       "E",
+                        'atk'        :       10,
+                        'def'        :       10,
+                        'life'       :       100,
+                        'money'      :       10000,
+                        'bank'       :       1000,
+                        'weapon'     :       0,
+                        'armor'      :       0,
+                        'inv'        :       {'fish' :   1,
+                                              'wood' :   1},
+                        'hab'        :       ['Double hit',
+                                              'Whip'],
+                        'guild'      :       None,
+                        'class'      :       None}
+                
+                db.Users.insert_one(payload)
+                await ctx.send("Insert user (Successful).")
+            except:
+                await ctx.send("Insert user (Fail).")
         else:
             await ctx.send("You do not have sufficient permissions to perform this action.")
             
