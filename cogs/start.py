@@ -8,11 +8,18 @@ class Start(commands.Cog, name = 'start'):
         
     @commands.command(name = 'start')
     async def start(self, ctx):
-        embed = discord.Embed(title = 'Your adventure begins here!',
-                              description = 'Enter dungeons, kill monsters, get unique items, create a family and complete this world. All this you can from now on, level up and be the best of **VOW**.\n\n**Don\'t die, this is not a game** If you die, your character is completely erased without the opportunity to recover them, take a good look at your life.',
-                              color = 0xff00e1)
-        embed.add_field(name = 'HOW TO START?', value = ':white_small_square: You start in **Solaris**, the city of beginners.\n:white_small_square: Use :coin:`shop` to see the elements of the store, use :moneybag: `buy <item>` and buy your basic equipment and go to an area to start your adventure, use :airplane: `zone <zone>` go to it and start gaining levels.', inline = False)
-        embed.add_field(name = 'HOW TO FARM?', value = ':white_small_square: To farm **EXP** and **MONEY** use :dagger: `hunt`, where you will have to complete the hunt. Do not forget to use :syringe: `life` to regenerate your life, you can buy more in the store.\n:white_small_square: To farm items you must go `hunt`, `adventure` or `dungeon` and find treasures.', inline = False)
+        
+        startinfo = 'Every so often dungeons will appear in the city, your duty is to enter and defeat the monsters. Each dungeon has a time limit to be completed, if it is not done the dungeon will be opened and the monsters will be able to escape to the world.'
+        dungeonlist = ':white_small_square: Use :crossed_swords: `dungeonlist` to see the list of dungeons that can enter, each dungeon has a statistical range that determines its difficulty, you can enter any dungeon you want, you decide the difficulty.'
+        enterdungeon = ':white_small_square: To enter join a dungeon use :dagger: `enterdungeon <id>` and wait for it to start.'
+        getitems = ':white_small_square: When entering a dungeon and killing monsters, you have a chance that they will drop an item. At the end of the dungeon, the items found inside will be distributed equally to all players. To see your items use :briefcase: `inventory`'
+        getmoney = ':white_small_square: For killing and finishing a dungeon these will give you a monetary reward, you can also sell your items using :scales: `sell <item>`. To see your money use :moneybag: `money` or :credit_card: `bank`.'
+        
+        embed = discord.Embed(title = 'You have earned the right to be a player.',
+                              description = 'Welcome player! Your duty is to protect this world and its people, save them from destruction.\n`Don\'t die`, you won\'t have another chance.',
+                              color = 0x18a4f8)
+        embed.add_field(name = 'HOW TO START?', value = f'{startinfo}\n\n{dungeonlist}\n{enterdungeon}', inline = False)
+        embed.add_field(name = 'AND AFTER?', value = f'{getitems}\n{getmoney}', inline = False)
         embed.add_field(name = 'MORE', value = ':white_small_square: For more information use :question: `help` and `help <command>` for a detailed explanation.')
         
         payload = {'_id'    :       int(ctx.message.author.id),
@@ -25,12 +32,14 @@ class Start(commands.Cog, name = 'start'):
                    'bank'       :       1000,
                    'weapon'     :       0,
                    'armor'      :       0,
-                   'inv'        :       {'fish' :   1,
-                                         'wood' :   1},
+                   'inv'        :       {'white crystal' :   1,
+                                         'wolf tooth' :   1},
                    'hab'        :       ['Double hit',
                                          'Whip'],
                    'guild'      :       None,
-                   'class'      :       None}
+                   'class'      :       None,
+                   'oncommand'  :       0,
+                   'ondungeon'  :       0}
         
         users_list = []
         for user in db.Users.find():

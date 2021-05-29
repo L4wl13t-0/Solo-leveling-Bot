@@ -73,17 +73,32 @@ class Moderation(commands.Cog, name = 'moderation'):
                         'bank'       :       1000,
                         'weapon'     :       0,
                         'armor'      :       0,
-                        'inv'        :       {'fish' :   1,
-                                              'wood' :   1},
+                        'inv'        :       {'white crystal' :   1,
+                                              'wolf tooth' :   1},
                         'hab'        :       ['Double hit',
                                               'Whip'],
                         'guild'      :       None,
-                        'class'      :       None}
+                        'class'      :       None,
+                        'oncommand'  :       0,
+                        'ondungeon'  :       0}
                 
                 db.Users.insert_one(payload)
                 await ctx.send("Insert user (Successful).")
             except:
                 await ctx.send("Insert user (Fail).")
+        else:
+            await ctx.send("You do not have sufficient permissions to perform this action.")
+            
+    @commands.command(name = 'showdatabase')
+    async def showdatabase(self, ctx):
+        if ctx.message.author.id in config["moderators"]:
+            try:
+                print(db.list_collection_names())
+                for x in db.Users.find():
+                    print(x)
+                await ctx.send("(Successful).")  
+            except:
+                await ctx.send("(Fail).")
         else:
             await ctx.send("You do not have sufficient permissions to perform this action.")
             
