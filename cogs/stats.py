@@ -6,7 +6,7 @@ class Stats(commands.Cog, name = 'stats'):
     def __init__(self, bot):
         self.bot = bot
     
-    @commands.command(name = 'profile')
+    @commands.command(name = 'profile', aliases = ['p'])
     async def profile(self, ctx):
         data = db.Users.find_one({'_id' :   ctx.message.author.id})
         
@@ -19,5 +19,15 @@ class Stats(commands.Cog, name = 'stats'):
         embed.set_thumbnail(url = ctx.message.author.avatar_url)
         await ctx.send(embed = embed)
         
+    @commands.command(name = 'inventory', aliases = ['i'])
+    async def inventory(self, ctx):
+        data = db.Users.find_one({'_id' :   ctx.message.author.id})
+        inv = '\n'.join("**{}:** {}".format(item, value) for item, value in data['inv'].items())
+        
+        embed = discord.Embed(title = f"{ctx.message.author.name}\'s inventory.",
+                              color = 0xe534eb)
+        embed.add_field(name = 'Items', value = inv)
+        await ctx.send(embed = embed)
+    
 def setup(bot):
     bot.add_cog(Stats(bot))
