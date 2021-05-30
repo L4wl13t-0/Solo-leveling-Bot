@@ -22,7 +22,7 @@ class Start(commands.Cog, name = 'start'):
         embed.add_field(name = 'AND AFTER?', value = f'{getitems}\n{getmoney}', inline = False)
         embed.add_field(name = 'MORE', value = ':white_small_square: For more information use :question: `help` and `help <command>` for a detailed explanation.')
         
-        payload = {'_id'    :       int(ctx.message.author.id),
+        payload = {'_id'        :       int(ctx.message.author.id),
                    'level'      :       1,
                    'rank'       :       "E",
                    'atk'        :       10,
