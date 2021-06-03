@@ -14,7 +14,7 @@ class Dungeon(commands.Cog, name = 'dungeon'):
         self.bot = bot
         self.createdungeon.start()
     
-    @tasks.loop(minutes = 10)
+    @tasks.loop(seconds = 15)
     async def createdungeon(self):
         payload = {'rank'       :       numpy.random.choice(dung['rank'], p = [0.33, 0.27, 0.20, 0.14, 0.05, 0.01]),
                    'monster'    :       numpy.random.choice(dung['monster'], p = [0.50, 0.50])}
@@ -23,8 +23,18 @@ class Dungeon(commands.Cog, name = 'dungeon'):
         
     @commands.command(name = 'dungeonlist', aliases = ['dungl'])
     async def dungeonlist(self, ctx):
+        idg = []
+        rank = []
         for x in db.Dungeons.find():
-            print(x)
+            idg.append(str(x['_id']))
+            rank.append(x['rank'])
+        dic = (dict(zip(rank, idg)))
+        data = '\n'.join(":black_small_square: **{}:** `{}`".format(item, value) for item, value in dic.items())
+        
+        embed = discord.Embed(title = '**Dungeons List**',
+                              color = 0x800080)
+        embed.add_field(name = 'Complete all.', value = data)
+        await ctx.send(embed = embed)
         
 def setup(bot):
     bot.add_cog(Dungeon(bot))
