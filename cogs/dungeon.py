@@ -14,7 +14,7 @@ class Dungeon(commands.Cog, name = 'dungeon'):
         self.bot = bot
         self.createdungeon.start()
     
-    @tasks.loop(seconds = 5.0)
+    @tasks.loop(minutes = 10)
     async def createdungeon(self):
         payload = {'rank'       :       numpy.random.choice(dung['rank'], p = [0.33, 0.27, 0.20, 0.14, 0.05, 0.01]),
                    'monster'    :       numpy.random.choice(dung['monster'], p = [0.50, 0.50])}

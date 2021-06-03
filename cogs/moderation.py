@@ -53,6 +53,7 @@ class Moderation(commands.Cog, name = 'moderation'):
         if ctx.message.author.id in config["moderators"]:
             try:
                 db.Users.drop()
+                db.Dungeons.drop()
                 await ctx.send("Database drop (Successful).")
             except:
                 await ctx.send("Database drop (Fail).")
