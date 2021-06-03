@@ -14,39 +14,48 @@ class Moderation(commands.Cog, name = 'moderation'):
         self.bot = bot
         
     @commands.command(name = 'reloadcog')
-    async def reloadcog(self, ctx, module):
-        if ctx.message.author.id in config["moderators"]:
-            try:
-                self.bot.unload_extension(f"cogs.{module}")
-                self.bot.load_extension(f"cogs.{module}")
-                await ctx.send("**" + module + "**" + " has been updated successfully.")
-            except:
-                await ctx.send("**" + module + "**" + " could not be found or could not restart.")
+    async def reloadcog(self, ctx, module = None):
+        if not module:
+            await ctx.send("Use `reloadcog <module>`.")
         else:
-            await ctx.send("You do not have sufficient permissions to perform this action.")
+            if ctx.message.author.id in config["moderators"]:
+                try:
+                    self.bot.unload_extension(f"cogs.{module}")
+                    self.bot.load_extension(f"cogs.{module}")
+                    await ctx.send("**" + module + "**" + " has been updated successfully.")
+                except:
+                    await ctx.send("**" + module + "**" + " could not be found or could not restart.")
+            else:
+                await ctx.send("You do not have sufficient permissions to perform this action.")
             
             
     @commands.command(name = 'loadcog')
     async def loadcog(self, ctx, module):
-        if ctx.message.author.id in config["moderators"]:
-            try:
-                self.bot.load_extension(f"cogs.{module}")
-                await ctx.send("**" + module + "**" + " has been loaded successfully.")
-            except:
-                await ctx.send("**" + module + "**" + " could not be found or could not load.")
+        if not module:
+            await ctx.send("Use `loadcog <module>`.")
         else:
-            await ctx.send("You do not have sufficient permissions to perform this action.")
+            if ctx.message.author.id in config["moderators"]:
+                try:
+                    self.bot.load_extension(f"cogs.{module}")
+                    await ctx.send("**" + module + "**" + " has been loaded successfully.")
+                except:
+                    await ctx.send("**" + module + "**" + " could not be found or could not load.")
+            else:
+                await ctx.send("You do not have sufficient permissions to perform this action.")
             
     @commands.command(name = 'unloadcog')
     async def unloadcog(self, ctx, module):
-        if ctx.message.author.id in config["moderators"]:
-            try:
-                self.bot.unload_extension(f"cogs.{module}")
-                await ctx.send("**" + module + "**" + " has been unloaded successfully.")
-            except:
-                await ctx.send("**" + module + "**" + " could not be found or could not load.")
+        if not module:
+            await ctx.send("Use `unloadcog <module>`.")
         else:
-            await ctx.send("You do not have sufficient permissions to perform this action.")
+            if ctx.message.author.id in config["moderators"]:
+                try:
+                    self.bot.unload_extension(f"cogs.{module}")
+                    await ctx.send("**" + module + "**" + " has been unloaded successfully.")
+                except:
+                    await ctx.send("**" + module + "**" + " could not be found or could not load.")
+            else:
+                await ctx.send("You do not have sufficient permissions to perform this action.")
             
     @commands.command(name = 'deletealldbyes')
     async def deletealldbyes(self, ctx):
