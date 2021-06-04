@@ -8,3 +8,12 @@ rank:
 monster:
   - Ogre
   - Skeleton
+stats:
+  Ogre:
+    atk: 15
+    def: 18
+    img: https://media.discordapp.net/attachments/838781843763494952/848667245076938762/619f447b66bcd551ef22b63788d77533.png?width=360&height=480
+  Skeleton:
+    atk: 18
+    def: 15
+    img: https://media.discordapp.net/attachments/838781843763494952/848667756445827152/8e70e5697fe57d1131fe579096a9849f.png?width=497&height=480
