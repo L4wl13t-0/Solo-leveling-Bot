@@ -69,6 +69,17 @@ class Moderation(commands.Cog, name = 'moderation'):
         else:
             await ctx.send("You do not have sufficient permissions to perform this action.")
             
+    @commands.command(name = 'deletedungeons')
+    async def deletedungeons(self, ctx):
+        if ctx.message.author.id in config["moderators"]:
+            try:
+                db.Dungeons.drop()
+                await ctx.send("Database drop (Successful).")
+            except:
+                await ctx.send("Database drop (Fail).")
+        else:
+            await ctx.send("You do not have sufficient permissions to perform this action.")
+            
     @commands.command(name = 'addfirstuser')
     async def addfirstuser(self, ctx):
         if ctx.message.author.id in config["moderators"]:
@@ -104,7 +115,7 @@ class Moderation(commands.Cog, name = 'moderation'):
         if ctx.message.author.id in config["moderators"]:
             try:
                 print(db.list_collection_names())
-                for x in db.Users.find():
+                for x in db.Dungeons.find():
                     print(x)
                 await ctx.send("(Successful).")  
             except:
