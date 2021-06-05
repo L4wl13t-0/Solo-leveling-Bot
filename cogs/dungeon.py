@@ -18,7 +18,8 @@ class Dungeon(commands.Cog, name = 'dungeon'):
     async def createdungeon(self):
         if db.Dungeons.find().count() < 15:
             payload = {'rank'       :       numpy.random.choice(dung['rank'], p = [0.33, 0.27, 0.20, 0.14, 0.05, 0.01]),
-                       'monster'    :       numpy.random.choice(dung['monster'], p = [0.50, 0.50])}
+                       'monster'    :       numpy.random.choice(dung['monster'], p = [0.50, 0.50]),
+                       'players'    :       0}
             db.Dungeons.insert_one(payload)
             print("Dungeon created.")
             print(db.Dungeons.find().count())
@@ -32,11 +33,14 @@ class Dungeon(commands.Cog, name = 'dungeon'):
         if int(ctx.message.author.id) in users_list:
             idg = []
             rank = []
+            players = []
             for x in db.Dungeons.find():
                 idg.append(str(x['_id']))
                 rank.append(x['rank'])
+                players.append(x['players'])
             dic = (dict(zip(idg, rank)))
-            data = '\n'.join(":black_small_square: **{}:** `{}`".format(value, item) for item, value in dic.items())
+            for pnum in players:
+                data = '\n'.join(":black_small_square: **{}:** `{}`  `{}/10`".format(value, item, pnum) for item, value in dic.items())
             embed = discord.Embed(title = '**Dungeons List**',
                                 color = 0x800080)
             embed.add_field(name = 'Complete all.', value = data)
