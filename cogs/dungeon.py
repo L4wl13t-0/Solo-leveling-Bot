@@ -76,7 +76,7 @@ class Dungeon(commands.Cog, name = 'dungeon'):
                         await ctx.send(f"{ctx.message.author.mention} You are already in a queue.")
                     else:
                         payload = {'_id'        :       dung,
-                                'players'    :       [ctx.message.author.id]}
+                                   'players'    :       [ctx.message.author.id]}
                         db.Queuedg.insert_one(payload)
                         db.Dungeons.update_one(query, {'$inc': {'players': 1}})
                         await ctx.send(f"{ctx.message.author.mention} you have entered the queue, wait for it to start.")
