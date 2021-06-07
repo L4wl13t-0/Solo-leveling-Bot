@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 import os, sys, yaml
-from database.mongo import db
+from database.mongo import db, client
 
 if not os.path.isfile("config.yaml"):
     sys.exit("'config.yaml' not found! Please add it and try again.")
@@ -30,7 +30,7 @@ class Moderation(commands.Cog, name = 'moderation'):
             
             
     @commands.command(name = 'loadcog')
-    async def loadcog(self, ctx, module):
+    async def loadcog(self, ctx, module = None):
         if not module:
             await ctx.send("Use `loadcog <module>`.")
         else:
@@ -44,7 +44,7 @@ class Moderation(commands.Cog, name = 'moderation'):
                 await ctx.send("You do not have sufficient permissions to perform this action.")
             
     @commands.command(name = 'unloadcog')
-    async def unloadcog(self, ctx, module):
+    async def unloadcog(self, ctx, module = None):
         if not module:
             await ctx.send("Use `unloadcog <module>`.")
         else:
@@ -61,8 +61,7 @@ class Moderation(commands.Cog, name = 'moderation'):
     async def deletealldbyes(self, ctx):
         if ctx.message.author.id in config["moderators"]:
             try:
-                db.Users.drop()
-                db.Dungeons.drop()
+                client.drop_database('RPG')
                 await ctx.send("Database drop (Successful).")
             except:
                 await ctx.send("Database drop (Fail).")
@@ -110,12 +109,25 @@ class Moderation(commands.Cog, name = 'moderation'):
         else:
             await ctx.send("You do not have sufficient permissions to perform this action.")
             
-    @commands.command(name = 'showdatabase')
-    async def showdatabase(self, ctx):
+    @commands.command(name = 'showdungeons')
+    async def showddungeons(self, ctx):
         if ctx.message.author.id in config["moderators"]:
             try:
                 print(db.list_collection_names())
                 for x in db.Dungeons.find():
+                    print(x)
+                await ctx.send("(Successful).")  
+            except:
+                await ctx.send("(Fail).")
+        else:
+            await ctx.send("You do not have sufficient permissions to perform this action.")
+        
+    @commands.command(name = 'showqueue')
+    async def showdqueue(self, ctx):
+        if ctx.message.author.id in config["moderators"]:
+            try:
+                print(db.list_collection_names())
+                for x in db.Queuedg.find():
                     print(x)
                 await ctx.send("(Successful).")  
             except:
