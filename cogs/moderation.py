@@ -16,68 +16,68 @@ class Moderation(commands.Cog, name = 'moderation'):
     @commands.command(name = 'reloadcog')
     async def reloadcog(self, ctx, module = None):
         if not module:
-            await ctx.send("Use `reloadcog <module>`.")
+            await ctx.send(f"{ctx.message.author.mention} Use `reloadcog <module>`.")
         else:
             if ctx.message.author.id in config["moderators"]:
                 try:
                     self.bot.unload_extension(f"cogs.{module}")
                     self.bot.load_extension(f"cogs.{module}")
-                    await ctx.send("**" + module + "**" + " has been updated successfully.")
+                    await ctx.send(f"{ctx.message.author.mention} **" + module + "**" + " has been updated successfully.")
                 except:
-                    await ctx.send("**" + module + "**" + " could not be found or could not restart.")
+                    await ctx.send(f"{ctx.message.author.mention} **" + module + "**" + " could not be found or could not restart.")
             else:
-                await ctx.send("You do not have sufficient permissions to perform this action.")
+                await ctx.send(f"{ctx.message.author.mention} You do not have sufficient permissions to perform this action.")
             
             
     @commands.command(name = 'loadcog')
     async def loadcog(self, ctx, module = None):
         if not module:
-            await ctx.send("Use `loadcog <module>`.")
+            await ctx.send(f"{ctx.message.author.mention} Use `loadcog <module>`.")
         else:
             if ctx.message.author.id in config["moderators"]:
                 try:
                     self.bot.load_extension(f"cogs.{module}")
-                    await ctx.send("**" + module + "**" + " has been loaded successfully.")
+                    await ctx.send(f"{ctx.message.author.mention} **" + module + "**" + " has been loaded successfully.")
                 except:
-                    await ctx.send("**" + module + "**" + " could not be found or could not load.")
+                    await ctx.send(f"{ctx.message.author.mention} **" + module + "**" + " could not be found or could not load.")
             else:
-                await ctx.send("You do not have sufficient permissions to perform this action.")
+                await ctx.send(f"{ctx.message.author.mention} You do not have sufficient permissions to perform this action.")
             
     @commands.command(name = 'unloadcog')
     async def unloadcog(self, ctx, module = None):
         if not module:
-            await ctx.send("Use `unloadcog <module>`.")
+            await ctx.send(f"{ctx.message.author.mention} Use `unloadcog <module>`.")
         else:
             if ctx.message.author.id in config["moderators"]:
                 try:
                     self.bot.unload_extension(f"cogs.{module}")
-                    await ctx.send("**" + module + "**" + " has been unloaded successfully.")
+                    await ctx.send(f"{ctx.message.author.mention} **" + module + "**" + " has been unloaded successfully.")
                 except:
-                    await ctx.send("**" + module + "**" + " could not be found or could not load.")
+                    await ctx.send(f"{ctx.message.author.mention} **" + module + "**" + " could not be found or could not load.")
             else:
-                await ctx.send("You do not have sufficient permissions to perform this action.")
+                await ctx.send(f"{ctx.message.author.mention} You do not have sufficient permissions to perform this action.")
             
     @commands.command(name = 'deletealldbyes')
     async def deletealldbyes(self, ctx):
         if ctx.message.author.id in config["moderators"]:
             try:
                 client.drop_database('RPG')
-                await ctx.send("Database drop (Successful).")
+                await ctx.send(f"{ctx.message.author.mention} Database drop (Successful).")
             except:
-                await ctx.send("Database drop (Fail).")
+                await ctx.send(f"{ctx.message.author.mention} Database drop (Fail).")
         else:
-            await ctx.send("You do not have sufficient permissions to perform this action.")
+            await ctx.send(f"{ctx.message.author.mention} You do not have sufficient permissions to perform this action.")
             
     @commands.command(name = 'deletedungeons')
     async def deletedungeons(self, ctx):
         if ctx.message.author.id in config["moderators"]:
             try:
                 db.Dungeons.drop()
-                await ctx.send("Database drop (Successful).")
+                await ctx.send(f"{ctx.message.author.mention} Database drop (Successful).")
             except:
-                await ctx.send("Database drop (Fail).")
+                await ctx.send(f"{ctx.message.author.mention} Database drop (Fail).")
         else:
-            await ctx.send("You do not have sufficient permissions to perform this action.")
+            await ctx.send(f"{ctx.message.author.mention} You do not have sufficient permissions to perform this action.")
             
     @commands.command(name = 'addfirstuser')
     async def addfirstuser(self, ctx):
@@ -103,11 +103,11 @@ class Moderation(commands.Cog, name = 'moderation'):
                         'ondungeon'  :       0}
                 
                 db.Users.insert_one(payload)
-                await ctx.send("Insert user (Successful).")
+                await ctx.send(f"{ctx.message.author.mention} Insert user (Successful).")
             except:
-                await ctx.send("Insert user (Fail).")
+                await ctx.send(f"{ctx.message.author.mention} Insert user (Fail).")
         else:
-            await ctx.send("You do not have sufficient permissions to perform this action.")
+            await ctx.send(f"{ctx.message.author.mention} You do not have sufficient permissions to perform this action.")
             
     @commands.command(name = 'showdungeons')
     async def showddungeons(self, ctx):
@@ -116,11 +116,11 @@ class Moderation(commands.Cog, name = 'moderation'):
                 print(db.list_collection_names())
                 for x in db.Dungeons.find():
                     print(x)
-                await ctx.send("(Successful).")  
+                await ctx.send(f"{ctx.message.author.mention} (Successful).")  
             except:
-                await ctx.send("(Fail).")
+                await ctx.send(f"{ctx.message.author.mention} (Fail).")
         else:
-            await ctx.send("You do not have sufficient permissions to perform this action.")
+            await ctx.send(f"{ctx.message.author.mention} You do not have sufficient permissions to perform this action.")
         
     @commands.command(name = 'showqueue')
     async def showdqueue(self, ctx):
@@ -129,11 +129,11 @@ class Moderation(commands.Cog, name = 'moderation'):
                 print(db.list_collection_names())
                 for x in db.Queuedg.find():
                     print(x)
-                await ctx.send("(Successful).")  
+                await ctx.send(f"{ctx.message.author.mention} (Successful).")  
             except:
-                await ctx.send("(Fail).")
+                await ctx.send(f"{ctx.message.author.mention} (Fail).")
         else:
-            await ctx.send("You do not have sufficient permissions to perform this action.")
+            await ctx.send(f"{ctx.message.author.mention} You do not have sufficient permissions to perform this action.")
             
 def setup(bot):
     bot.add_cog(Moderation(bot))

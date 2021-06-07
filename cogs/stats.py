@@ -38,7 +38,7 @@ class Stats(commands.Cog, name = 'stats'):
                 embed.set_thumbnail(url = member.avatar_url)
                 await ctx.send(embed = embed)
         else:
-            await ctx.send('You do not have a registered account, use `start` to play.')
+            await ctx.send(f'{ctx.message.author.mention} You do not have a registered account, use `start` to play.')
         
     @commands.command(name = 'inventory', aliases = ['i'])
     async def inventory(self, ctx, member: discord.Member = None):
@@ -64,7 +64,7 @@ class Stats(commands.Cog, name = 'stats'):
                 embed.add_field(name = 'Items', value = inv)
                 await ctx.send(embed = embed)
         else:
-            await ctx.send('You do not have a registered account, use `start` to play.')
+            await ctx.send(f'{ctx.message.author.mention} You do not have a registered account, use `start` to play.')
     
 def setup(bot):
     bot.add_cog(Stats(bot))

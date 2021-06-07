@@ -1,3 +1,4 @@
+from re import A
 import discord
 from discord.ext import commands, tasks
 from database.mongo import db
@@ -25,7 +26,7 @@ class Dungeon(commands.Cog, name = 'dungeon'):
             print("Dungeon created.")
             print(db.Dungeons.find().count())
         
-    @commands.command(name = 'dungeonlist', aliases = ['dgl'])
+    @commands.command(name = 'dungeonlist', aliases = ['dglist'])
     async def dungeonlist(self, ctx):
         users_list = []
         for user in db.Users.find():
@@ -79,7 +80,7 @@ class Dungeon(commands.Cog, name = 'dungeon'):
                                    'players'    :       [ctx.message.author.id]}
                         db.Queuedg.insert_one(payload)
                         db.Dungeons.update_one(query, {'$inc': {'players': 1}})
-                        await ctx.send(f"{ctx.message.author.mention} you have entered the queue, wait for it to start.")
+                        await ctx.send(f"{ctx.message.author.mention} You have entered the queue, wait for it to start.")
                 else:
                     if ctx.message.author.id in pList:
                         await ctx.send(f"{ctx.message.author.mention} You are already in a queue.")
@@ -88,7 +89,42 @@ class Dungeon(commands.Cog, name = 'dungeon'):
                         db.Dungeons.update_one(query, {'$inc': {'players': 1}})
                         await ctx.send(f"{ctx.message.author.mention} you have entered the queue, wait for it to start.")
             else:
-                await ctx.send('You do not have a registered account, use `start` to play.')
+                await ctx.send(f'{ctx.message.author.mention} You do not have a registered account, use `start` to play.')
+                
+    @commands.command(name = 'dungeonleave', aliases = ['dgleave'])
+    async def dungeonleave(self, ctx, dung = None):
+        if not dung:
+            await ctx.send(f"{ctx.message.author.mention} Use `dungeonleave <id>`.")
+        else:
+            users_list = []
+            for user in db.Users.find():
+                users_list.append(int(user['_id']))
+            
+            if int(ctx.message.author.id) in users_list:
+                idg = []
+                listP = []
+                
+                for x in db.Queuedg.find():
+                    idg.append(str(x['_id']))
+                    
+                for x in db.Queuedg.find({'_id': dung}):
+                    listP.append(x['players'])
+                    
+                pList = [j for i in listP for j in i]
+                query = {'_id': ObjectId(dung)}
+                
+                if not dung in idg:
+                    await ctx.send(f'{ctx.message.author.mention} The queue does not exist, please verify the id.')
+                else:
+                    if ctx.message.author.id in pList:
+                        db.Queuedg.update_one({'_id': dung}, {'$pull': {'players': ctx.message.author.id}})
+                        db.Dungeons.update_one(query, {'$inc': {'players': -1}})
+                        await ctx.send(f'{ctx.message.author.mention} You just got out of the queue.')
+                    else:
+                        await ctx.send(f'{ctx.message.author.mention} You are not in this queue.')
+                        print(pList)
+            else:
+                await ctx.send(f'{ctx.message.author.mention} You do not have a registered account, use `start` to play.')
         
 def setup(bot):
     bot.add_cog(Dungeon(bot))
